@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<style>
+	#bus {
+		width: 100%;
+	}
+	#bus iframe {
+		width: 45%;
+		height: 400px;
+	}
+	</style>
+	<body>
+		<div id="bus">
+			<h1 id="message">No message yet</h1>
+			<iframe src="frame1.html"></iframe>
+			<iframe src="frame2.html"></iframe>
+		</div>
+	</body>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" type="text/javascript"></script>
+	<script>
+	$(function() {
+		$(window).on('message', function(message) {
+			$('#message').text(message.originalEvent.data.message);
+			$('#bus iframe').each(function(i, iframe) {
+				iframe.contentWindow.postMessage({
+					event: 'update',
+					message: 'Message from main window, cause [' + message.originalEvent.data.message + ']'
+				}, ['*']);
+			});
+		});
+	});
+	</script>
+</html>
